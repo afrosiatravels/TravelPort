@@ -12,16 +12,17 @@ namespace Travelport
         public static String Get(String key)
         {
             String rtv = " ";
-            try { 
-            
+
+            try
+            {
                 List<Setting> Settings = new List<Setting>();
                 Settings = LoadSettings();
-                        
-                foreach(Setting s in Settings )
+
+                foreach (Setting s in Settings)
                 {
                     if (s.Key == key)
                     {
-                       rtv = s.Value;
+                        rtv = s.Value;
                     }
                 }
             }
@@ -31,17 +32,17 @@ namespace Travelport
             }
             return rtv;
 
-
         }
+
         private static List<Setting> LoadSettings()
         {
             List<Setting> Settings = new List<Setting>();
             String ExeFolder = Utils.ExeFolder();
             String SettingsFolder = Path.Combine(ExeFolder, "Settings");
             String Settingsfile = Path.Combine(SettingsFolder, "Settings.txt");
+
             try
             {
-                
                 if (!Directory.Exists(SettingsFolder))
                 {
                     Directory.CreateDirectory(SettingsFolder);
@@ -50,24 +51,24 @@ namespace Travelport
                 {
                     CreateSettingFile(Settingsfile);
                 }
-             
             }
             catch (Exception ex)
             {
                 Log.Execption(ex);
             }
             return LoadSettingFile(Settingsfile);
-
         }
 
         private static List<Setting> LoadSettingFile(string settingsfile)
         {
             List<Setting> settings = new List<Setting>();
-            try { 
 
+            try
+            {
                 using (StreamReader sr = new StreamReader(settingsfile))
                 {
                     string line;
+
                     while ((line = sr.ReadLine()) != null)
                     {
                         if (line.Trim().Length > 0)
@@ -79,7 +80,7 @@ namespace Travelport
                         }
                     }
                 }
-             }
+            }
             catch (Exception ex)
             {
                 Log.Execption(ex);
@@ -89,31 +90,30 @@ namespace Travelport
 
         private static void CreateSettingFile(String Settingsfile)
         {
-            try { 
-            using (StreamWriter sw = new StreamWriter(Settingsfile))
+            try
             {
-                sw.WriteLine(@"# Settings File");
-                sw.WriteLine(@"# Lines beginning with a # will be ignored");
-                sw.WriteLine(@"# Settings are in the form of a Key=Value");
-                sw.WriteLine(@"# i.e. MyPath=C:\AnyFolderPath");
-                sw.WriteLine(@"");
-                sw.WriteLine(@"SourceFileFolder=" + Path.Combine(Utils.ExeFolder(),"FTPIN"));
-                sw.WriteLine(@"SourceFileMask=*.txt");
-                sw.WriteLine(@"BaseProcessingFolder=" + Path.Combine(Utils.ExeFolder(), "Process"));
-                sw.WriteLine(@"OutputFileName=[CC]ewWEBLINK_[yyyyMMdd]_1400_[999]");
-                sw.WriteLine(@"CountryCode=IE");
-                sw.WriteLine(@"SendToBSPLink=false");
-                sw.WriteLine(@"SFTPTarget=sftp://olan:56131464@127.0.0.1:2/2Olan/Work/_Drop/LiatTest");
-                sw.WriteLine(@"SFTPVanDyke=C:\Program Files (x86)\VanDyke Software\SecureFX\sfxcl.exe");
-
-            }
+                using (StreamWriter sw = new StreamWriter(Settingsfile))
+                {
+                    sw.WriteLine(@"# Settings File");
+                    sw.WriteLine(@"# Lines beginning with a # will be ignored");
+                    sw.WriteLine(@"# Settings are in the form of a Key=Value");
+                    sw.WriteLine(@"# i.e. MyPath=C:\AnyFolderPath");
+                    sw.WriteLine(@"");
+                    sw.WriteLine(@"SourceFileFolder=" + Path.Combine(Utils.ExeFolder(), "FTPIN"));
+                    sw.WriteLine(@"SourceFileMask=*.txt");
+                    sw.WriteLine(@"BaseProcessingFolder=" + Path.Combine(Utils.ExeFolder(), "Process"));
+                    sw.WriteLine(@"OutputFileName=[CC]ewWEBLINK_[yyyyMMdd]_1400_[999]");
+                    sw.WriteLine(@"CountryCode=IE");
+                    sw.WriteLine(@"SendToBSPLink=false");
+                    sw.WriteLine(@"SFTPTarget=sftp://user:password@127.0.0.1:2/Work/_Drop/LiatTest");
+                    sw.WriteLine(@"SFTPVanDyke=C:\Program Files (x86)\VanDyke Software\SecureFX\sfxcl.exe");
+                }
             }
             catch (Exception ex)
             {
                 Log.Execption(ex);
             }
         }
-
 
     }
 }
